@@ -8,25 +8,33 @@
     <style>
         .result {
             font-weight: bold;
-            pointer-events: none; /* Prevent user interaction */
-            user-select: none; /* Disable text selection */
+            pointer-events: none;
+            user-select: none;
         }
     </style>
 </head>
 <body>
     <h2>SIP Calculator</h2>
-    <label>Monthly Investment (₹): <input type="number" id="sipAmount"></label>
-    <label>Annual Interest Rate (%): <input type="number" id="sipRate"></label>
-    <label>Investment Duration (Years): <input type="number" id="sipYears"></label>
+    <label>Monthly Investment (₹): <input type="text" id="sipAmount" oninput="formatInput(this)"></label>
+    <label>Annual Interest Rate (%): <input type="text" id="sipRate" oninput="formatInput(this)"></label>
+    <label>Investment Duration (Years): <input type="text" id="sipYears" oninput="formatInput(this)"></label>
     <button onclick="calculateSIP()">Calculate</button>
     
     <h3>Future Value: ₹<span id="sipResult" class="result">0</span></h3>
 
     <script>
+        function formatInput(element) {
+            // Remove all non-numeric characters except dot
+            let num = element.value.replace(/,/g, '').replace(/[^0-9.]/g, '');
+            // Format with commas
+            element.value = Number(num).toLocaleString("en-IN", { maximumFractionDigits: 2 });
+        }
+
         function calculateSIP() {
-            let P = parseFloat(document.getElementById("sipAmount").value);
-            let r = parseFloat(document.getElementById("sipRate").value) / 100 / 12;
-            let n = parseFloat(document.getElementById("sipYears").value) * 12;
+            // Get values without commas
+            let P = parseFloat(document.getElementById("sipAmount").value.replace(/,/g, ''));
+            let r = parseFloat(document.getElementById("sipRate").value.replace(/,/g, '')) / 100 / 12;
+            let n = parseFloat(document.getElementById("sipYears").value.replace(/,/g, '')) * 12;
             
             if (isNaN(P) || isNaN(r) || isNaN(n)) {
                 document.getElementById("sipResult").innerText = "Invalid Input";
