@@ -5,32 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HRA Exemption Calculator</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .input-group label {
+            width: 200px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .input-group input {
+            width: 200px; /* Fixed width (around 3 inches) */
+            padding: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .result {
+            font-weight: bold;
+            pointer-events: none;
+            user-select: none;
+        }
+    </style>
 </head>
 <body>
-    <h2>HRA Exemption Calculator</h2>
-    <label>Basic Salary (₹): <input type="number" id="basicSalary"></label>
-    <label>HRA Received (₹): <input type="number" id="hraReceived"></label>
-    <label>Rent Paid (₹): <input type="number" id="rentPaid"></label>
-    <label>City Type: 
-        <select id="cityType">
-            <option value="metro">Metro</option>
-            <option value="nonMetro">Non-Metro</option>
-        </select>
-    </label>
-    <button onclick="calculateHRA()">Calculate</button>
-    <h3>HRA Exemption: ₹<span id="hraResult">0</span></h3>
+
+    <div class="container">
+        <h2>HRA Exemption Calculator</h2>
+
+        <div class="input-group">
+            <label>Basic Salary (₹):</label>
+            <input type="text" id="basicSalary" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>HRA (₹):</label>
+            <input type="text" id="hra" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>Rent Paid (₹):</label>
+            <input type="text" id="rentPaid" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>City (Delhi, Mumbai, etc.):</label>
+            <input type="text" id="city" oninput="formatInput(this)">
+        </div>
+
+        <button onclick="calculateHRA()">Calculate</button>
+        
+        <h3>HRA Exempted: ₹<span id="hraResult" class="result">0</span></h3>
+    </div>
 
     <script>
+        function formatInput(element) {
+            let num = element.value.replace(/,/g, '').replace(/[^0-9.]/g, '');
+            element.value = Number(num).toLocaleString("en-IN", { maximumFractionDigits: 2 });
+        }
+
         function calculateHRA() {
-            let basic = parseFloat(document.getElementById("basicSalary").value);
-            let hra = parseFloat(document.getElementById("hraReceived").value);
-            let rent = parseFloat(document.getElementById("rentPaid").value);
-            let city = document.getElementById("cityType").value;
-            let metroLimit = 0.5 * basic;
-            let nonMetroLimit = 0.4 * basic;
-            let exemption = Math.min(hra, rent - (0.1 * basic), city === "metro" ? metroLimit : nonMetroLimit);
-            document.getElementById("hraResult").innerText = exemption.toFixed(2);
+            let basic = parseFloat(document.getElementById("basicSalary").value.replace(/,/g, ''));
+            let hra = parseFloat(document.getElementById("hra").value.replace(/,/g, ''));
+            let rentPaid = parseFloat(document.getElementById("rentPaid").value.replace(/,/g, ''));
+            let city = document.getElementById("city").value.toLowerCase();
+            
+            if (isNaN(basic) || isNaN(hra) || isNaN(rentPaid) || city === "") {
+                document.getElementById("hraResult").innerText = "Invalid Input";
+                return;
+            }
+
+            // Calculations (simplified)
+            let hraExemption = Math.min(hra, 0.10 * basic, rentPaid - 0.10 * basic);
+            document.getElementById("hraResult").innerText = Number(hraExemption).toLocaleString("en-IN", { maximumFractionDigits: 2 });
         }
     </script>
+
 </body>
 </html>
