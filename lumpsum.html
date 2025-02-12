@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumpsum Investment Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Lumpsum Investment Calculator</h2>
+    <label>Initial Investment (₹): <input type="number" id="lumpsumAmount"></label>
+    <label>Annual Interest Rate (%): <input type="number" id="lumpsumRate"></label>
+    <label>Investment Duration (Years): <input type="number" id="lumpsumYears"></label>
+    <button onclick="calculateLumpsum()">Calculate</button>
+    <h3>Future Value: ₹<span id="lumpsumResult">0</span></h3>
+
+    <script>
+        function calculateLumpsum() {
+            let P = parseFloat(document.getElementById("lumpsumAmount").value);
+            let r = parseFloat(document.getElementById("lumpsumRate").value) / 100;
+            let t = parseFloat(document.getElementById("lumpsumYears").value);
+            let FV = P * Math.pow((1 + r), t);
+            document.getElementById("lumpsumResult").innerText = FV.toFixed(2);
+        }
+    </script>
+</body>
+</html>

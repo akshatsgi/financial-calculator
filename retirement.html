@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Retirement Calculator</h2>
+    <label>Current Age: <input type="number" id="currentAge"></label>
+    <label>Retirement Age: <input type="number" id="retirementAge"></label>
+    <label>Monthly Savings (₹): <input type="number" id="monthlySavings"></label>
+    <label>Expected Annual Return (%): <input type="number" id="returnRate"></label>
+    <button onclick="calculateRetirement()">Calculate</button>
+    <h3>Estimated Retirement Corpus: ₹<span id="retirementResult">0</span></h3>
+
+    <script>
+        function calculateRetirement() {
+            let currentAge = parseInt(document.getElementById("currentAge").value);
+            let retirementAge = parseInt(document.getElementById("retirementAge").value);
+            let savings = parseFloat(document.getElementById("monthlySavings").value);
+            let rate = parseFloat(document.getElementById("returnRate").value) / 100;
+            let years = retirementAge - currentAge;
+            let corpus = savings * (((Math.pow(1 + rate, years) - 1) / rate) * (1 + rate));
+            document.getElementById("retirementResult").innerText = corpus.toFixed(2);
+        }
+    </script>
+</body>
+</html>

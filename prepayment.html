@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prepayment Loan Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Prepayment Loan Calculator</h2>
+    <label>Loan Amount (₹): <input type="number" id="loanAmount"></label>
+    <label>Interest Rate (% per year): <input type="number" id="loanRate"></label>
+    <label>Loan Tenure (Years): <input type="number" id="loanYears"></label>
+    <label>Prepayment Amount (₹): <input type="number" id="prepaymentAmount"></label>
+    <button onclick="calculatePrepayment()">Calculate</button>
+    <h3>New EMI: ₹<span id="newEMI">0</span></h3>
+
+    <script>
+        function calculatePrepayment() {
+            let P = parseFloat(document.getElementById("loanAmount").value);
+            let r = parseFloat(document.getElementById("loanRate").value) / 1200;
+            let n = parseFloat(document.getElementById("loanYears").value) * 12;
+            let prepayment = parseFloat(document.getElementById("prepaymentAmount").value);
+            let newLoanAmount = P - prepayment;
+            let newEMI = (newLoanAmount * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+            document.getElementById("newEMI").innerText = newEMI.toFixed(2);
+        }
+    </script>
+</body>
+</html>

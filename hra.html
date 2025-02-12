@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRA Exemption Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>HRA Exemption Calculator</h2>
+    <label>Basic Salary (₹): <input type="number" id="basicSalary"></label>
+    <label>HRA Received (₹): <input type="number" id="hraReceived"></label>
+    <label>Rent Paid (₹): <input type="number" id="rentPaid"></label>
+    <label>City Type: 
+        <select id="cityType">
+            <option value="metro">Metro</option>
+            <option value="nonMetro">Non-Metro</option>
+        </select>
+    </label>
+    <button onclick="calculateHRA()">Calculate</button>
+    <h3>HRA Exemption: ₹<span id="hraResult">0</span></h3>
+
+    <script>
+        function calculateHRA() {
+            let basic = parseFloat(document.getElementById("basicSalary").value);
+            let hra = parseFloat(document.getElementById("hraReceived").value);
+            let rent = parseFloat(document.getElementById("rentPaid").value);
+            let city = document.getElementById("cityType").value;
+            let metroLimit = 0.5 * basic;
+            let nonMetroLimit = 0.4 * basic;
+            let exemption = Math.min(hra, rent - (0.1 * basic), city === "metro" ? metroLimit : nonMetroLimit);
+            document.getElementById("hraResult").innerText = exemption.toFixed(2);
+        }
+    </script>
+</body>
+</html>
