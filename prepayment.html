@@ -5,26 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prepayment Loan Calculator</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .input-group label {
+            width: 200px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .input-group input {
+            width: 200px; /* Fixed width (around 3 inches) */
+            padding: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .result {
+            font-weight: bold;
+            pointer-events: none;
+            user-select: none;
+        }
+    </style>
 </head>
 <body>
-    <h2>Prepayment Loan Calculator</h2>
-    <label>Loan Amount (₹): <input type="number" id="loanAmount"></label>
-    <label>Interest Rate (% per year): <input type="number" id="loanRate"></label>
-    <label>Loan Tenure (Years): <input type="number" id="loanYears"></label>
-    <label>Prepayment Amount (₹): <input type="number" id="prepaymentAmount"></label>
-    <button onclick="calculatePrepayment()">Calculate</button>
-    <h3>New EMI: ₹<span id="newEMI">0</span></h3>
+
+    <div class="container">
+        <h2>Prepayment Loan Calculator</h2>
+
+        <div class="input-group">
+            <label>Loan Amount (₹):</label>
+            <input type="text" id="loanAmount" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>Interest Rate (%):</label>
+            <input type="text" id="interestRate" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>Loan Tenure (Months):</label>
+            <input type="text" id="loanTenure" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>Prepayment Amount (₹):</label>
+            <input type="text" id="prepaymentAmount" oninput="formatInput(this)">
+        </div>
+
+        <button onclick="calculatePrepayment()">Calculate</button>
+        
+        <h3>Remaining Loan Balance: ₹<span id="prepaymentResult" class="result">0</span></h3>
+    </div>
 
     <script>
+        function formatInput(element) {
+            let num = element.value.replace(/,/g, '').replace(/[^0-9.]/g, '');
+            element.value = Number(num).toLocaleString("en-IN", { maximumFractionDigits: 2 });
+        }
+
         function calculatePrepayment() {
-            let P = parseFloat(document.getElementById("loanAmount").value);
-            let r = parseFloat(document.getElementById("loanRate").value) / 1200;
-            let n = parseFloat(document.getElementById("loanYears").value) * 12;
-            let prepayment = parseFloat(document.getElementById("prepaymentAmount").value);
-            let newLoanAmount = P - prepayment;
-            let newEMI = (newLoanAmount * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-            document.getElementById("newEMI").innerText = newEMI.toFixed(2);
+            let P = parseFloat(document.getElementById("loanAmount").value.replace(/,/g, ''));
+            let r = parseFloat(document.getElementById("interestRate").value.replace(/,/g, '')) / 100 / 12;
+            let n = parseFloat(document.getElementById("loanTenure").value.replace(/,/g, ''));
+            let prepayment = parseFloat(document.getElementById("prepaymentAmount").value.replace(/,/g, ''));
+            
+            if (isNaN(P) || isNaN(r) || isNaN(n) || isNaN(prepayment)) {
+                document.getElementById("prepaymentResult").innerText = "Invalid Input";
+                return;
+            }
+
+            let remainingLoan = P * Math.pow(1 + r, n) - prepayment;
+            document.getElementById("prepaymentResult").innerText = Number(remainingLoan).toLocaleString("en-IN", { maximumFractionDigits: 2 });
         }
     </script>
+
 </body>
 </html>
