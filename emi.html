@@ -3,16 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMI Calculator</title>
+    <title>SIP Calculator</title>
     <link rel="stylesheet" href="style.css">
-    <script defer src="emi.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .input-group label {
+            width: 200px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .input-group input {
+            width: 200px; /* Fixed width (around 3 inches) */
+            padding: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .result {
+            font-weight: bold;
+            pointer-events: none;
+            user-select: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>EMI Calculator</h1>
-    <label>Loan Amount (₹): <input type="number" id="loanAmount"></label><br>
-    <label>Annual Interest Rate (%): <input type="number" id="interestRate"></label><br>
-    <label>Loan Tenure (Years): <input type="number" id="loanTenure"></label><br>
-    <button onclick="calculateEMI()">Calculate EMI</button>
-    <h3>Monthly EMI: ₹<span id="emiResult">0</span></h3>
+
+    <div class="container">
+        <h2>SIP Calculator</h2>
+
+        <div class="input-group">
+            <label>Monthly Investment (₹):</label>
+            <input type="text" id="sipAmount" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>Annual Interest Rate (%):</label>
+            <input type="text" id="sipRate" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>Investment Duration (Years):</label>
+            <input type="text" id="sipYears" oninput="formatInput(this)">
+        </div>
+
+        <button onclick="calculateSIP()">Calculate</button>
+        
+        <h3>Future Value: ₹<span id="sipResult" class="result">0</span></h3>
+    </div>
+
+    <script>
+        function formatInput(element) {
+            let num = element.value.replace(/,/g, '').replace(/[^0-9.]/g, '');
+            element.value = Number(num).toLocaleString("en-IN", { maximumFractionDigits: 2 });
+        }
+
+        function calculateSIP() {
+            let P = parseFloat(document.getElementById("sipAmount").value.replace(/,/g, ''));
+            let r = parseFloat(document.getElementById("sipRate").value.replace(/,/g, '')) / 100 / 12;
+            let n = parseFloat(document.getElementById("sipYears").value.replace(/,/g, '')) * 12;
+            
+            if (isNaN(P) || isNaN(r) || isNaN(n)) {
+                document.getElementById("sipResult").innerText = "Invalid Input";
+                return;
+            }
+
+            let FV = P * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+            document.getElementById("sipResult").innerText = Number(FV).toLocaleString("en-IN", { maximumFractionDigits: 2 });
+        }
+    </script>
+
 </body>
 </html>
