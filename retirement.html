@@ -5,26 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retirement Calculator</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .input-group label {
+            width: 200px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .input-group input {
+            width: 200px; /* Fixed width (around 3 inches) */
+            padding: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .result {
+            font-weight: bold;
+            pointer-events: none;
+            user-select: none;
+        }
+    </style>
 </head>
 <body>
-    <h2>Retirement Calculator</h2>
-    <label>Current Age: <input type="number" id="currentAge"></label>
-    <label>Retirement Age: <input type="number" id="retirementAge"></label>
-    <label>Monthly Savings (₹): <input type="number" id="monthlySavings"></label>
-    <label>Expected Annual Return (%): <input type="number" id="returnRate"></label>
-    <button onclick="calculateRetirement()">Calculate</button>
-    <h3>Estimated Retirement Corpus: ₹<span id="retirementResult">0</span></h3>
+
+    <div class="container">
+        <h2>Retirement Calculator</h2>
+
+        <div class="input-group">
+            <label>Current Age:</label>
+            <input type="text" id="currentAge" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>Retirement Age:</label>
+            <input type="text" id="retirementAge" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>Monthly Savings (₹):</label>
+            <input type="text" id="monthlySavings" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>Expected Rate of Return (%):</label>
+            <input type="text" id="rateOfReturn" oninput="formatInput(this)">
+        </div>
+
+        <button onclick="calculateRetirement()">Calculate</button>
+        
+        <h3>Total Savings at Retirement: ₹<span id="retirementResult" class="result">0</span></h3>
+    </div>
 
     <script>
+        function formatInput(element) {
+            let num = element.value.replace(/,/g, '').replace(/[^0-9.]/g, '');
+            element.value = Number(num).toLocaleString("en-IN", { maximumFractionDigits: 2 });
+        }
+
         function calculateRetirement() {
-            let currentAge = parseInt(document.getElementById("currentAge").value);
-            let retirementAge = parseInt(document.getElementById("retirementAge").value);
-            let savings = parseFloat(document.getElementById("monthlySavings").value);
-            let rate = parseFloat(document.getElementById("returnRate").value) / 100;
-            let years = retirementAge - currentAge;
-            let corpus = savings * (((Math.pow(1 + rate, years) - 1) / rate) * (1 + rate));
-            document.getElementById("retirementResult").innerText = corpus.toFixed(2);
+            let currentAge = parseFloat(document.getElementById("currentAge").value.replace(/,/g, ''));
+            let retirementAge = parseFloat(document.getElementById("retirementAge").value.replace(/,/g, ''));
+            let monthlySavings = parseFloat(document.getElementById("monthlySavings").value.replace(/,/g, ''));
+            let rateOfReturn = parseFloat(document.getElementById("rateOfReturn").value.replace(/,/g, '')) / 100 / 12;
+
+            if (isNaN(currentAge) || isNaN(retirementAge) || isNaN(monthlySavings) || isNaN(rateOfReturn)) {
+                document.getElementById("retirementResult").innerText = "Invalid Input";
+                return;
+            }
+
+            let months = (retirementAge - currentAge) * 12;
+            let futureValue = monthlySavings * (((Math.pow(1 + rateOfReturn, months) - 1) / rateOfReturn) * (1 + rateOfReturn));
+            document.getElementById("retirementResult").innerText = Number(futureValue).toLocaleString("en-IN", { maximumFractionDigits: 2 });
         }
     </script>
+
 </body>
 </html>
