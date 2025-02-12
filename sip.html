@@ -6,20 +6,43 @@
     <title>SIP Calculator</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
         .input-group {
             display: flex;
             align-items: center;
+            justify-content: center;
             margin-bottom: 10px;
         }
 
         .input-group label {
             width: 200px;
             font-weight: bold;
+            text-align: left;
         }
 
         .input-group input {
             width: 200px; /* Fixed width (around 3 inches) */
             padding: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
         }
 
         .result {
@@ -30,26 +53,29 @@
     </style>
 </head>
 <body>
-    <h2>SIP Calculator</h2>
 
-    <div class="input-group">
-        <label>Monthly Investment (₹):</label>
-        <input type="text" id="sipAmount" oninput="formatInput(this)">
+    <div class="container">
+        <h2>SIP Calculator</h2>
+
+        <div class="input-group">
+            <label>Monthly Investment (₹):</label>
+            <input type="text" id="sipAmount" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>Annual Interest Rate (%):</label>
+            <input type="text" id="sipRate" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>Investment Duration (Years):</label>
+            <input type="text" id="sipYears" oninput="formatInput(this)">
+        </div>
+
+        <button onclick="calculateSIP()">Calculate</button>
+        
+        <h3>Future Value: ₹<span id="sipResult" class="result">0</span></h3>
     </div>
-
-    <div class="input-group">
-        <label>Annual Interest Rate (%):</label>
-        <input type="text" id="sipRate" oninput="formatInput(this)">
-    </div>
-
-    <div class="input-group">
-        <label>Investment Duration (Years):</label>
-        <input type="text" id="sipYears" oninput="formatInput(this)">
-    </div>
-
-    <button onclick="calculateSIP()">Calculate</button>
-    
-    <h3>Future Value: ₹<span id="sipResult" class="result">0</span></h3>
 
     <script>
         function formatInput(element) {
@@ -71,5 +97,6 @@
             document.getElementById("sipResult").innerText = Number(FV).toLocaleString("en-IN", { maximumFractionDigits: 2 });
         }
     </script>
+
 </body>
 </html>
