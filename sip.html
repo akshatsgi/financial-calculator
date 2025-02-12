@@ -8,8 +8,18 @@
     <style>
         .input-group {
             display: flex;
-            flex-direction: column;
-            margin-bottom: 10px; /* Adds space between inputs */
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .input-group label {
+            width: 200px; /* Fixed width for labels */
+            font-weight: bold;
+        }
+
+        .input-group input {
+            flex: 1; /* Take remaining space */
+            padding: 5px;
         }
 
         .result {
