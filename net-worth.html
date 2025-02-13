@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Net Worth Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Net Worth Calculator</h2>
+
+        <div class="input-group">
+            <label>Total Assets (₹):</label>
+            <input type="text" id="assets" oninput="formatInput(this)">
+        </div>
+
+        <div class="input-group">
+            <label>Total Liabilities (₹):</label>
+            <input type="text" id="liabilities" oninput="formatInput(this)">
+        </div>
+
+        <button onclick="calculateNetWorth()">Calculate</button>
+        
+        <h3>Net Worth: ₹<span id="netWorthResult" class="result">0</span></h3>
+    </div>
+
+    <script>
+        function formatInput(element) {
+            let num = element.value.replace(/,/g, '').replace(/[^0-9.]/g, '');
+            element.value = Number(num).toLocaleString("en-IN", { maximumFractionDigits: 2 });
+        }
+
+        function calculateNetWorth() {
+            let assets = parseFloat(document.getElementById("assets").value.replace(/,/g, ''));
+            let liabilities = parseFloat(document.getElementById("liabilities").value.replace(/,/g, ''));
+
+            if (isNaN(assets) || isNaN(liabilities)) {
+                document.getElementById("netWorthResult").innerText = "Invalid Input";
+                return;
+            }
+
+            let netWorth = assets - liabilities;
+            document.getElementById("netWorthResult").innerText = Number(netWorth).toLocaleString("en-IN", { maximumFractionDigits: 2 });
+        }
+    </script>
+
+</body>
+</html>
