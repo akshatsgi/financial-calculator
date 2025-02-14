@@ -1,13 +1,14 @@
 body {
-    background-color: #121212  !important;
-    color: #ffffff;
+    background-color: #ffffff;
     font-family: Arial, sans-serif;
     text-align: center;
     margin: 50px;
 }
 .section {
-    background: #1e1e1e;
-    color: #ffffff;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 h1 {
     color: #2c3e50;
