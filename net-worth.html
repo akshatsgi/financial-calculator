@@ -5,24 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Net Worth Calculator</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .section {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .section h3 {
+            margin-top: 0;
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .input-group label {
+            width: 60%;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 35%;
+            padding: 5px;
+            text-align: right;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .result {
+            font-weight: bold;
+            pointer-events: none;
+            user-select: none;
+        }
+    </style>
 </head>
 <body>
 
     <div class="container">
         <h2>Net Worth Calculator</h2>
 
-        <div class="input-group">
-            <label>Total Assets (₹):</label>
-            <input type="text" id="assets" oninput="formatInput(this)">
+        <div class="section">
+            <h3>Assets</h3>
+            <div class="input-group"><label>Equity Investments (₹):</label><input type="text" id="equity" oninput="formatInput(this)"></div>
+            <div class="input-group"><label>Savings Account Balance (₹):</label><input type="text" id="savings" oninput="formatInput(this)"></div>
+            <div class="input-group"><label>Gold Investments (₹):</label><input type="text" id="gold" oninput="formatInput(this)"></div>
+            <div class="input-group"><label>Provident Fund (PF) (₹):</label><input type="text" id="pf" oninput="formatInput(this)"></div>
+            <div class="input-group"><label>National Pension Scheme (NPS) (₹):</label><input type="text" id="nps" oninput="formatInput(this)"></div>
+            <div class="input-group"><label>Bonds (₹):</label><input type="text" id="bonds" oninput="formatInput(this)"></div>
         </div>
 
-        <div class="input-group">
-            <label>Total Liabilities (₹):</label>
-            <input type="text" id="liabilities" oninput="formatInput(this)">
+        <div class="section">
+            <h3>Liabilities</h3>
+            <div class="input-group"><label>Loans (₹):</label><input type="text" id="loans" oninput="formatInput(this)"></div>
+            <div class="input-group"><label>Credit Card Bills Due (₹):</label><input type="text" id="creditCards" oninput="formatInput(this)"></div>
+            <div class="input-group"><label>Any Other Payment Due (₹):</label><input type="text" id="otherPayments" oninput="formatInput(this)"></div>
         </div>
 
-        <button onclick="calculateNetWorth()">Calculate</button>
-        
+        <button onclick="calculateNetWorth()">Calculate Net Worth</button>
+
         <h3>Net Worth: ₹<span id="netWorthResult" class="result">0</span></h3>
     </div>
 
@@ -33,15 +97,21 @@
         }
 
         function calculateNetWorth() {
-            let assets = parseFloat(document.getElementById("assets").value.replace(/,/g, ''));
-            let liabilities = parseFloat(document.getElementById("liabilities").value.replace(/,/g, ''));
+            let equity = parseFloat(document.getElementById("equity").value.replace(/,/g, '')) || 0;
+            let savings = parseFloat(document.getElementById("savings").value.replace(/,/g, '')) || 0;
+            let gold = parseFloat(document.getElementById("gold").value.replace(/,/g, '')) || 0;
+            let pf = parseFloat(document.getElementById("pf").value.replace(/,/g, '')) || 0;
+            let nps = parseFloat(document.getElementById("nps").value.replace(/,/g, '')) || 0;
+            let bonds = parseFloat(document.getElementById("bonds").value.replace(/,/g, '')) || 0;
 
-            if (isNaN(assets) || isNaN(liabilities)) {
-                document.getElementById("netWorthResult").innerText = "Invalid Input";
-                return;
-            }
+            let loans = parseFloat(document.getElementById("loans").value.replace(/,/g, '')) || 0;
+            let creditCards = parseFloat(document.getElementById("creditCards").value.replace(/,/g, '')) || 0;
+            let otherPayments = parseFloat(document.getElementById("otherPayments").value.replace(/,/g, '')) || 0;
 
-            let netWorth = assets - liabilities;
+            let totalAssets = equity + savings + gold + pf + nps + bonds;
+            let totalLiabilities = loans + creditCards + otherPayments;
+            let netWorth = totalAssets - totalLiabilities;
+
             document.getElementById("netWorthResult").innerText = Number(netWorth).toLocaleString("en-IN", { maximumFractionDigits: 2 });
         }
     </script>
